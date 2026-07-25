@@ -451,3 +451,16 @@ async function markAllNotificationsRead() {
     console.error(err);
   }
 }
+
+// Expose functions globally for HTML event handlers and navigation
+window.switchTab = switchTab;
+window.toggleNotificationsPanel = toggleNotificationsPanel;
+window.checkInVisitor = checkInVisitor;
+window.checkOutVisitor = checkOutVisitor;
+window.onDepartmentChange = onDepartmentChange;
+window.handleRegistration = handleRegistration;
+window.resetRegisterForm = resetRegisterForm;
+window.searchLogs = searchLogs;
+window.markAllNotificationsRead = markAllNotificationsRead;
+window.checkOutVisitorDirect = checkOutVisitorDirect;
+

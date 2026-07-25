@@ -85,3 +85,13 @@ function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) modal.style.display = 'none';
 }
+
+// Expose functions globally for non-module inline scripts and event handlers
+window.checkSession = checkSession;
+window.logout = logout;
+window.showToast = showToast;
+window.updateNavbar = updateNavbar;
+window.escapeHTML = escapeHTML;
+window.openModal = openModal;
+window.closeModal = closeModal;
+

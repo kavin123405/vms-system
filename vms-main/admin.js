@@ -1281,3 +1281,31 @@ async function deleteFacultyMember(id) {
     console.error(err);
   }
 }
+
+// Expose functions globally for HTML event handlers and navigation
+window.switchTab = switchTab;
+window.handleAddDept = handleAddDept;
+window.deleteDepartment = deleteDepartment;
+window.handleAddEmp = handleAddEmp;
+window.deleteEmployee = deleteEmployee;
+window.searchLogs = searchLogs;
+window.openEditVisitor = openEditVisitor;
+window.handleEditVisitor = handleEditVisitor;
+window.deleteVisitor = deleteVisitor;
+window.exportReportCSV = exportReportCSV;
+window.generateReport = generateReport;
+window.saveAdmissionSettings = saveAdmissionSettings;
+window.savePlacementSettings = savePlacementSettings;
+window.deleteEvent = deleteEvent;
+window.handleAddEvent = handleAddEvent;
+window.deleteOffice = deleteOffice;
+window.handleAddOffice = handleAddOffice;
+window.deleteNav = deleteNav;
+window.handleAddNav = handleAddNav;
+window.openFacultyModal = openFacultyModal;
+window.handleAddFacultyInline = handleAddFacultyInline;
+window.deleteFacultyMember = deleteFacultyMember;
+window.toggleNotificationsPanel = toggleNotificationsPanel;
+window.checkOutOverstayedDirect = checkOutOverstayedDirect;
+window.markAllNotificationsRead = markAllNotificationsRead;
+

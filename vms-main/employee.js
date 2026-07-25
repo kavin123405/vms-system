@@ -284,3 +284,10 @@ async function handleProfileUpdate(e) {
     btn.innerText = 'Update Profile';
   }
 }
+
+// Expose functions globally for HTML event handlers and navigation
+window.switchTab = switchTab;
+window.respondRequest = respondRequest;
+window.searchRequests = searchRequests;
+window.handleProfileUpdate = handleProfileUpdate;
+
