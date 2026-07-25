@@ -1,0 +1,18 @@
+[
+  {
+    "id": "dept-1",
+    "name": "Computer Science"
+  },
+  {
+    "id": "dept-2",
+    "name": "Business Administration"
+  },
+  {
+    "id": "dept-3",
+    "name": "Information Technology"
+  },
+  {
+    "id": "dept-4",
+    "name": "Commerce"
+  }
+]

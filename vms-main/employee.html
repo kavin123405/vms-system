@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Portal - KPRCAS VMS</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo2.jpg" alt="Logo" />
+        <div>
+          <h2>KPRCAS VMS</h2>
+          <span>Employee Portal</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item">
+          <a class="sidebar-link active" onclick="switchTab('dashboard')">📋 Dashboard</a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" onclick="switchTab('requests')">🛎️ Visitor Requests</a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" onclick="switchTab('profile')">👤 My Profile</a>
+        </li>
+        <li class="sidebar-item" style="margin-top: 50px;">
+          <a class="sidebar-link logout-btn" onclick="logout()">🚪 Logout</a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Panel -->
+    <main class="main-panel">
+      <!-- Navbar -->
+      <header class="top-navbar">
+        <div class="nav-brand" id="currentTabTitle">Employee Dashboard</div>
+        <div class="nav-user">
+          <div class="nav-user-info">
+            <div class="nav-user-name" id="navUserName">Employee Name</div>
+            <div class="nav-user-role" id="navUserRole">Employee</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+
+        <!-- ================= DASHBOARD VIEW ================= -->
+        <section id="dashboardView" class="tab-content">
+          <!-- Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-title">Total Requests</div>
+              <div id="statTotal" class="stat-value">0</div>
+            </div>
+            <div class="stat-card stat-pending">
+              <div class="stat-title">Pending Approvals</div>
+              <div id="statPending" class="stat-value">0</div>
+            </div>
+            <div class="stat-card stat-approved">
+              <div class="stat-title">Approved Visitors</div>
+              <div id="statApproved" class="stat-value">0</div>
+            </div>
+            <div class="stat-card stat-rejected">
+              <div class="stat-title">Rejected Visitors</div>
+              <div id="statRejected" class="stat-value">0</div>
+            </div>
+          </div>
+
+          <!-- Quick Action Requests Table -->
+          <div class="data-card">
+            <div class="card-header">
+              <div class="card-title">Pending Visitor Approvals</div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Visitor Name</th>
+                    <th>Phone</th>
+                    <th>Date</th>
+                    <th>Expected Time</th>
+                    <th>Purpose</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="pendingRequestsTableBody">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= REQUESTS LOG VIEW ================= -->
+        <section id="requestsView" class="tab-content" style="display: none;">
+          <div class="data-card">
+            <div class="card-header">
+              <div class="card-title">Visit Request History</div>
+              <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by Visitor Name, Phone, Purpose..." oninput="searchRequests()" />
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Visitor Name</th>
+                    <th>Phone</th>
+                    <th>Purpose</th>
+                    <th>Check-In</th>
+                    <th>Check-Out</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                  <!-- Dynamic -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PROFILE VIEW ================= -->
+        <section id="profileView" class="tab-content" style="display: none;">
+          <div class="data-card" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-header">
+              <div class="card-title">Update Personal Profile</div>
+            </div>
+            <form id="profileForm" onsubmit="handleProfileUpdate(event)">
+              <div class="form-grid">
+                <div class="full-width">
+                  <label class="login-form-group">
+                    <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Full Name</span>
+                    <input type="text" id="profName" class="form-control" required />
+                  </label>
+                </div>
+                <div>
+                  <label class="login-form-group">
+                    <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Email Address</span>
+                    <input type="email" id="profEmail" class="form-control" required />
+                  </label>
+                </div>
+                <div>
+                  <label class="login-form-group">
+                    <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Mobile Number</span>
+                    <input type="tel" id="profPhone" class="form-control" required />
+                  </label>
+                </div>
+                <div class="full-width">
+                  <label class="login-form-group">
+                    <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Update Password (leave blank if unchanged)</span>
+                    <input type="password" id="profPassword" class="form-control" placeholder="••••••••" />
+                  </label>
+                </div>
+              </div>
+              <div style="margin-top: 30px; display: flex; justify-content: flex-end;">
+                <button type="submit" id="profileSubmitBtn" class="btn btn-primary">Update Profile</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="employee.js"></script>
+</body>
+</html>

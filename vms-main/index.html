@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - KPRCAS Visitor Management System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-body">
+  <div class="login-card">
+    <img src="assets/logo2.jpg" alt="KPRCAS Logo" />
+    <h2>KPRCAS VMS</h2>
+    <p>Visitor Management System Portal</p>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="login-form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" class="form-control" placeholder="Enter your email" required />
+      </div>
+
+      <div class="login-form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control" placeholder="Enter your password" required />
+      </div>
+
+      <button type="submit" id="loginBtn" class="btn btn-primary">Sign In</button>
+    </form>
+
+    <div style="margin: 25px 0 15px 0; border-top: 1px solid var(--border-slate); padding-top: 20px;">
+      <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 12px; font-size: 0.95rem;">🏫 Visiting the Campus?</p>
+      <a href="visitor-services.html" class="btn btn-success" style="width: 100%; text-decoration: none; display: flex; gap: 8px; align-items: center; justify-content: center; font-size: 0.95rem;">
+        🧭 Smart Visitor Services
+      </a>
+    </div>
+
+    <div style="margin-top: 20px; font-size: 0.85rem; color: #64748b;">
+      <p>💡 Demo Accounts:</p>
+      <p>Admin: admin@kprcas.com / admin123</p>
+      <p>Employee: employee@kprcas.com / employee123</p>
+      <p>Security: security@kprcas.com / security123</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // If user is already logged in, redirect immediately
+    const loggedInUser = localStorage.getItem('vms_user');
+    if (loggedInUser) {
+      const user = JSON.parse(loggedInUser);
+      if (user.role === 'admin') window.location.href = 'admin.html';
+      else if (user.role === 'employee') window.location.href = 'employee.html';
+      else if (user.role === 'security') window.location.href = 'security.html';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const loginBtn = document.getElementById('loginBtn');
+
+      loginBtn.disabled = true;
+      loginBtn.innerText = 'Signing In...';
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Store user session in localStorage
+          localStorage.setItem('vms_user', JSON.stringify(data.user));
+          
+          showToast('Login successful! Redirecting...', 'success');
+
+          // Redirect based on role
+          setTimeout(() => {
+            if (data.user.role === 'admin') window.location.href = 'admin.html';
+            else if (data.user.role === 'employee') window.location.href = 'employee.html';
+            else if (data.user.role === 'security') window.location.href = 'security.html';
+          }, 800);
+
+        } else {
+          const errData = await response.json();
+          showToast(errData.error || 'Authentication failed.', 'danger');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showToast('Server connection failed.', 'danger');
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerText = 'Sign In';
+      }
+    }
+  </script>
+</body>
+</html>

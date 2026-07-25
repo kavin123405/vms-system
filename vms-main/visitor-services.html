@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Visitor Services - KPRCAS</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .visitor-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .visitor-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .visitor-header h1 {
+      font-size: 2.2rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .visitor-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+    .purpose-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .purpose-card {
+      background-color: white;
+      border-radius: 16px;
+      border: 1px solid var(--border-slate);
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+    .purpose-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+    .purpose-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+    .purpose-card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .workflow-card {
+      background-color: white;
+      border-radius: 20px;
+      border: 1px solid var(--border-slate);
+      padding: 30px;
+      margin-top: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      animation: slideUp 0.4s ease-out;
+    }
+    .workflow-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .info-block {
+      background-color: var(--bg-slate);
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 25px;
+    }
+    .info-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      font-size: 0.95rem;
+    }
+    .info-item span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .faculty-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .faculty-card {
+      border: 1px solid var(--border-slate);
+      border-radius: 12px;
+      padding: 15px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .faculty-name {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .faculty-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .faculty-contact {
+      font-size: 0.85rem;
+      color: var(--primary);
+      margin-top: 5px;
+    }
+    .duration-btn {
+      padding: 10px 15px;
+      border: 1px solid var(--border-slate);
+      background-color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    .duration-btn.active, .duration-btn:hover {
+      border-color: var(--primary);
+      background-color: rgba(30, 60, 114, 0.05);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Nav -->
+  <header class="top-navbar" style="position: static; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div class="nav-brand" style="display: flex; align-items: center; gap: 10px;">
+      <img src="assets/logo2.jpg" alt="Logo" style="height: 40px; border-radius: 6px;" />
+      <span>KPRCAS Visitor Services</span>
+    </div>
+    <a href="index.html" class="btn btn-outline btn-sm">🚪 Staff Login</a>
+  </header>
+
+  <div class="visitor-container">
+    <div class="visitor-header">
+      <h1>Welcome to KPR College of Arts and Science</h1>
+      <p>Please select the primary reason for your visit below to receive tailored navigation and guidance.</p>
+    </div>
+
+    <!-- 11 Visitor Purposes -->
+    <div class="purpose-grid" id="purposeGrid">
+      <div class="purpose-card" onclick="selectPurpose('Parents Meeting', '👨‍👩‍👧')">
+        <span class="icon">👨‍👩‍👧</span>
+        <h3>Parents Meeting</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Student Admission', '🎓')">
+        <span class="icon">🎓</span>
+        <h3>Student Admission</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('College Event', '🎉')">
+        <span class="icon">🎉</span>
+        <h3>College Event</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Placement Drive', '💼')">
+        <span class="icon">💼</span>
+        <h3>Placement Drive</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Certificate Collection', '📜')">
+        <span class="icon">📜</span>
+        <h3>Certificate Collection</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Fee Payment', '💳')">
+        <span class="icon">💳</span>
+        <h3>Fee Payment</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Principal Meeting', '👑')">
+        <span class="icon">👑</span>
+        <h3>Principal Meeting</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Office Work', '🏢')">
+        <span class="icon">🏢</span>
+        <h3>Office Work</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Faculty Meeting', '🏫')">
+        <span class="icon">🏫</span>
+        <h3>Faculty Meeting</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Campus Inquiry', '🗺️')">
+        <span class="icon">🗺️</span>
+        <h3>Campus Inquiry</h3>
+      </div>
+      <div class="purpose-card" onclick="selectPurpose('Other', '❔')">
+        <span class="icon">❔</span>
+        <h3>Other Purpose</h3>
+      </div>
+    </div>
+
+    <!-- Active workflow details -->
+    <div id="workflowArea" style="display: none;">
+      <!-- Dynamic workflow contents -->
+    </div>
+  </div>
+
+  <!-- ================= REGISTER VISITOR MODAL ================= -->
+  <div class="modal-overlay" id="registerModal">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Visitor Registration Details</h3>
+        <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+      </div>
+      <form id="visitorServicesForm" onsubmit="submitRegistration(event)">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div>
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Visitor Name *</span>
+                <input type="text" id="vName" class="form-control" required />
+              </label>
+            </div>
+            <div>
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Mobile Number *</span>
+                <input type="tel" id="vPhone" class="form-control" placeholder="10-digit number" required />
+              </label>
+            </div>
+            <div>
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Email Address</span>
+                <input type="email" id="vEmail" class="form-control" />
+              </label>
+            </div>
+            <div>
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Gender *</span>
+                <select id="vGender" class="form-control" required>
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+            </div>
+            <div class="full-width">
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Full Address</span>
+                <input type="text" id="vAddress" class="form-control" />
+              </label>
+            </div>
+
+            <!-- Expected Duration buttons -->
+            <div class="full-width">
+              <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark); display:block; margin-bottom:10px;">Expected Duration of Visit *</span>
+              <div style="display:flex; flex-wrap:wrap; gap:10px;" id="durationContainer">
+                <button type="button" class="duration-btn active" onclick="setDuration('15 Minutes')">15 Mins</button>
+                <button type="button" class="duration-btn" onclick="setDuration('30 Minutes')">30 Mins</button>
+                <button type="button" class="duration-btn" onclick="setDuration('45 Minutes')">45 Mins</button>
+                <button type="button" class="duration-btn" onclick="setDuration('1 Hour')">1 Hour</button>
+                <button type="button" class="duration-btn" onclick="setDuration('2 Hours')">2 Hours</button>
+                <button type="button" class="duration-btn" onclick="setDuration('3 Hours')">3 Hours</button>
+                <button type="button" class="duration-btn" onclick="setDuration('Half Day')">Half Day</button>
+                <button type="button" class="duration-btn" onclick="setDuration('Full Day')">Full Day</button>
+                <button type="button" class="duration-btn" onclick="setDuration('Custom')">Custom Time</button>
+              </div>
+            </div>
+
+            <!-- Custom time input (hidden initially) -->
+            <div class="full-width" id="customTimeGroup" style="display:none;">
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Expected Checkout Time</span>
+                <input type="time" id="vCustomTime" class="form-control" />
+              </label>
+            </div>
+
+            <div>
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Government ID Number (Optional)</span>
+                <input type="text" id="vGovId" class="form-control" placeholder="Aadhar / PAN / License" />
+              </label>
+            </div>
+            <div>
+              <label class="login-form-group">
+                <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark);">Vehicle Number (Optional)</span>
+                <input type="text" id="vVehicle" class="form-control" placeholder="e.g. TN 37 AB 1234" />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('registerModal')">Cancel</button>
+          <button type="submit" id="vSubmitBtn" class="btn btn-success">Complete Registration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    let selectedPurposeText = '';
+    let selectedPurposeIcon = '';
+    let expectedDuration = '15 Minutes';
+    
+    let dbDepartments = [];
+    let dbFaculty = [];
+    let dbEvents = [];
+    let dbOffices = [];
+    let dbNavigation = [];
+
+    // On Load
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchData();
+    });
+
+    async function fetchData() {
+      try {
+        const [deptRes, facRes, eventRes, officeRes, navRes] = await Promise.all([
+          fetch('/api/departments'),
+          fetch('/api/faculty'),
+          fetch('/api/events'),
+          fetch('/api/offices'),
+          fetch('/api/navigation')
+        ]);
+
+        if (deptRes.ok) dbDepartments = await deptRes.json();
+        if (facRes.ok) dbFaculty = await facRes.json();
+        if (eventRes.ok) dbEvents = await eventRes.json();
+        if (officeRes.ok) dbOffices = await officeRes.json();
+        if (navRes.ok) dbNavigation = await navRes.json();
+      } catch (err) {
+        console.error('Error fetching services details:', err);
+      }
+    }
+
+    function selectPurpose(purpose, icon) {
+      selectedPurposeText = purpose;
+      selectedPurposeIcon = icon;
+
+      // Highlight selected purpose card
+      const cards = document.querySelectorAll('.purpose-card');
+      cards.forEach(c => {
+        if (c.querySelector('h3').innerText.includes(purpose)) {
+          c.style.borderColor = 'var(--primary)';
+          c.style.backgroundColor = 'rgba(30, 60, 114, 0.05)';
+        } else {
+          c.style.borderColor = 'var(--border-slate)';
+          c.style.backgroundColor = 'white';
+        }
+      });
+
+      renderWorkflow();
+    }
+
+    function renderWorkflow() {
+      const area = document.getElementById('workflowArea');
+      area.style.display = 'block';
+      
+      let html = '';
+
+      if (selectedPurposeText === 'Parents Meeting' || selectedPurposeText === 'Faculty Meeting') {
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">${selectedPurposeIcon} ${selectedPurposeText} Workflow</div>
+            <p style="margin-bottom:15px; color:var(--text-muted);">Please select the department you want to visit:</p>
+            <div class="form-grid" style="margin-bottom:20px;">
+              <div>
+                <select id="workDept" class="form-control" onchange="loadDeptInfo()">
+                  <option value="">Select Department</option>
+                  ${dbDepartments.map(d => `<option value="${d.id}">${d.name}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            
+            <div id="deptInfoContainer" style="display:none;">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'Student Admission') {
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">🎓 Student Admission Services</div>
+            <div class="info-block">
+              <div class="info-title">Admission Office Details</div>
+              <div class="info-grid">
+                <div class="info-item"><span>Office</span>Admission Cell</div>
+                <div class="info-item"><span>Timing</span>9:00 AM - 5:30 PM</div>
+                <div class="info-item"><span>Admission Head</span>Dr. Rajesh Sekar</div>
+                <div class="info-item"><span>Contact</span>9876543244</div>
+                <div class="info-item"><span>Email</span>admission@kprcas.com</div>
+                <div class="info-item"><span>Location</span>Main Block, Ground Floor, Room 101</div>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+              <h4 style="margin-bottom:10px; color:var(--primary-dark);">Admission Counselors Available</h4>
+              <div class="faculty-grid">
+                <div class="faculty-card">
+                  <span class="faculty-name">Mrs. Shalini</span>
+                  <span class="faculty-desc">Senior Admission Counselor</span>
+                  <span class="faculty-contact">📞 Phone: 9876543245</span>
+                </div>
+                <div class="faculty-card">
+                  <span class="faculty-name">Mr. Deepak</span>
+                  <span class="faculty-desc">Admission Officer</span>
+                  <span class="faculty-contact">📞 Phone: 9876543246</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <button class="btn btn-primary" onclick="openRegistration()">📝 Register Walk-In Visit</button>
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'College Event') {
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">🎉 College Events Navigation</div>
+            <p style="margin-bottom:15px; color:var(--text-muted);">Please select the college event you are attending:</p>
+            <div class="form-grid" style="margin-bottom:20px;">
+              <div>
+                <select id="workEvent" class="form-control" onchange="loadEventInfo()">
+                  <option value="">Select College Event</option>
+                  ${dbEvents.map(e => `<option value="${e.id}">${e.name} (${e.status})</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <div id="eventInfoContainer" style="display:none;">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'Placement Drive') {
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">💼 Placement Drive Guide</div>
+            <div class="info-block">
+              <div class="info-title">Placement Office & Officer Info</div>
+              <div class="info-grid">
+                <div class="info-item"><span>Office</span>Placement Hub</div>
+                <div class="info-item"><span>Placement Officer</span>Mr. Vijay Shankar</div>
+                <div class="info-item"><span>Phone</span>9876543255</div>
+                <div class="info-item"><span>Email</span>placement@kprcas.com</div>
+                <div class="info-item"><span>Office Room</span>Block B, Room 102</div>
+                <div class="info-item"><span>Primary Venue</span>Seminar Hall 1 & Labs</div>
+              </div>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+              <h4 style="margin-bottom:10px; color:var(--primary-dark);">Ongoing Interview Schedules</h4>
+              <div class="faculty-grid">
+                <div class="faculty-card">
+                  <span class="faculty-name">TCS Recruitment Drive</span>
+                  <span class="faculty-desc">Interview & Written test</span>
+                  <span class="faculty-contact">📍 Venue: Seminar Hall 1 & CS Labs (B-Block, Ground Floor)</span>
+                </div>
+                <div class="faculty-card">
+                  <span class="faculty-name">Cognizant Interview</span>
+                  <span class="faculty-desc">HR & Technical rounds</span>
+                  <span class="faculty-contact">📍 Venue: Seminar Hall 2 (B-Block, 1st Floor)</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <button class="btn btn-primary" onclick="openRegistration()">📝 Register Walk-In Visit</button>
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'Certificate Collection') {
+        const office = dbOffices.find(o => o.type === 'certificate') || { name: 'Academic Section', head: 'Mr. Krishnan', phone: '9876543266', timing: '10:00 AM - 4:00 PM', building: 'Main Block', floor: 'Ground Floor', room: 'Room 10' };
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">📜 Certificate Collection Desk</div>
+            <div class="info-block">
+              <div class="info-title">Academic Records Office Details</div>
+              <div class="info-grid">
+                <div class="info-item"><span>Office Name</span>${office.name}</div>
+                <div class="info-item"><span>Staff In-charge</span>${office.head}</div>
+                <div class="info-item"><span>Working Hours</span>${office.timing}</div>
+                <div class="info-item"><span>Phone Number</span>${office.phone}</div>
+                <div class="info-item"><span>Office Location</span>${office.building}, ${office.floor}, ${office.room}</div>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <button class="btn btn-primary" onclick="openRegistration()">📝 Register Walk-In Visit</button>
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'Fee Payment') {
+        const office = dbOffices.find(o => o.type === 'fee_payment') || { name: 'Accounts Office', head: 'Finance Officer', phone: '9876543277', timing: '9:30 AM - 3:30 PM', building: 'Main Block', floor: 'Ground Floor', room: 'Room 12' };
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">💳 Fee Payment & Accounts Cash Counter</div>
+            <div class="info-block">
+              <div class="info-title">Accounts Office Details</div>
+              <div class="info-grid">
+                <div class="info-item"><span>Office Name</span>${office.name}</div>
+                <div class="info-item"><span>Head In-charge</span>${office.head}</div>
+                <div class="info-item"><span>Counter Hours</span>${office.timing}</div>
+                <div class="info-item"><span>Contact Office</span>${office.phone}</div>
+                <div class="info-item"><span>Cash Desk Location</span>${office.building}, ${office.floor}, ${office.room}</div>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <button class="btn btn-primary" onclick="openRegistration()">📝 Register Walk-In Visit</button>
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'Principal Meeting') {
+        const office = dbOffices.find(o => o.type === 'principal') || { name: 'Principal Office', head: 'Dr. A. K. Bilal', phone: '9876543288', timing: '11:00 AM - 1:00 PM', building: 'Main Block', floor: '1st Floor', room: 'Room 101' };
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">👑 Principal Office Appointment Desk</div>
+            <div class="info-block">
+              <div class="info-title">Office Administration Details</div>
+              <div class="info-grid">
+                <div class="info-item"><span>Office Name</span>${office.name}</div>
+                <div class="info-item"><span>Principal Name</span>${office.head}</div>
+                <div class="info-item"><span>Secretary Phone</span>${office.phone}</div>
+                <div class="info-item"><span>Office Timing</span>${office.timing}</div>
+                <div class="info-item"><span>Location</span>${office.building}, ${office.floor}, ${office.room}</div>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <button class="btn btn-primary" onclick="openRegistration()">📝 Register Walk-In Visit</button>
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'Office Work') {
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">🏢 Administrative Offices & Cells</div>
+            <p style="margin-bottom:15px; color:var(--text-muted);">Please select the administrative office you need to visit:</p>
+            <div class="form-grid" style="margin-bottom:20px;">
+              <div>
+                <select id="workOffice" class="form-control" onchange="loadOfficeInfo()">
+                  <option value="">Select Administrative Office</option>
+                  ${dbOffices.map(o => `<option value="${o.id}">${o.name}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <div id="officeInfoContainer" style="display:none;">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        `;
+      }
+      else if (selectedPurposeText === 'Campus Inquiry') {
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">🗺️ Campus Navigation Guide</div>
+            <p style="margin-bottom:15px; color:var(--text-muted);">Please select the campus location you are looking for:</p>
+            <div class="form-grid" style="margin-bottom:20px;">
+              <div>
+                <select id="workNav" class="form-control" onchange="loadNavigationInfo()">
+                  <option value="">Select Campus Location</option>
+                  ${dbNavigation.map(n => `<option value="${n.id}">${n.name}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <div id="navInfoContainer" style="display:none;">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        `;
+      }
+      else {
+        html = `
+          <div class="workflow-card">
+            <div class="workflow-title">❔ Other Campus Visits</div>
+            <p style="margin-bottom:20px; color:var(--text-muted);">For general visits, enquiries, or other unlisted purposes, please proceed directly to registration. Our security desk will review and guide you upon entry.</p>
+            
+            <div style="text-align:right;">
+              <button class="btn btn-primary" onclick="openRegistration()">📝 Register Walk-In Visit</button>
+            </div>
+          </div>
+        `;
+      }
+
+      area.innerHTML = html;
+      
+      setTimeout(() => {
+        area.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+
+    function loadDeptInfo() {
+      const deptId = document.getElementById('workDept').value;
+      const container = document.getElementById('deptInfoContainer');
+      
+      if (!deptId) {
+        container.style.display = 'none';
+        return;
+      }
+
+      const dept = dbDepartments.find(d => d.id === deptId);
+      if (!dept) return;
+
+      const faculty = dbFaculty.filter(f => f.departmentId === deptId);
+
+      container.innerHTML = `
+        <div class="info-block" style="margin-top:20px;">
+          <div class="info-title">Department Details - ${dept.name}</div>
+          <div class="info-grid">
+            <div class="info-item"><span>Dept Code</span>${dept.code || '-'}</div>
+            <div class="info-item"><span>Block Name</span>${dept.block || '-'}</div>
+            <div class="info-item"><span>Floor Level</span>${dept.floor || '-'}</div>
+            <div class="info-item"><span>Room Number</span>${dept.room || '-'}</div>
+            <div class="info-item"><span>Office Timing</span>${dept.timing || '-'}</div>
+            <div class="info-item"><span>Head of Dept (HOD)</span>${dept.hodName || '-'}</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+          <h4 style="margin-bottom:10px; color:var(--primary-dark);">HOD Contact Info</h4>
+          <div class="faculty-grid" style="grid-template-columns:1fr;">
+            <div class="faculty-card" style="border-left:4px solid var(--accent);">
+              <span class="faculty-name">${dept.hodName}</span>
+              <span class="faculty-desc">${dept.hodDesignation || 'HOD'}</span>
+              <span class="faculty-contact">📞 Mobile: ${dept.hodPhone || '-'} | ✉️ Email: ${dept.hodEmail || '-'}</span>
+            </div>
+          </div>
+        </div>
+
+        ${faculty.length > 0 ? `
+          <div style="margin-bottom: 25px;">
+            <h4 style="margin-bottom:10px; color:var(--primary-dark);">Department Faculty Members</h4>
+            <div class="faculty-grid">
+              ${faculty.map(f => `
+                <div class="faculty-card">
+                  <span class="faculty-name">${f.name}</span>
+                  <span class="faculty-desc">${f.designation}</span>
+                  <span class="faculty-contact">📞 Mobile: ${f.phone || '-'}</span>
+                  <span style="font-size:0.8rem; color:var(--text-muted);">✉️ ${f.email || '-'}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        ${dept.mapLink ? `
+          <div style="margin-bottom:25px;">
+            <h4 style="margin-bottom:10px; color:var(--primary-dark);">Department Location Map</h4>
+            <div style="border-radius:12px; overflow:hidden; border:1px solid var(--border-slate);">
+              <iframe src="https://maps.google.com/maps?q=${encodeURIComponent(dept.name + ' Department KPRCAS')}&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+          </div>
+        ` : ''}
+
+        <div style="text-align:right;">
+          <button class="btn btn-primary" onclick="openRegistration('${dept.id}')">📝 Register & Meet Faculty</button>
+        </div>
+      `;
+
+      container.style.display = 'block';
+    }
+
+    function loadEventInfo() {
+      const eventId = document.getElementById('workEvent').value;
+      const container = document.getElementById('eventInfoContainer');
+
+      if (!eventId) {
+        container.style.display = 'none';
+        return;
+      }
+
+      const evt = dbEvents.find(e => e.id === eventId);
+      if (!evt) return;
+
+      container.innerHTML = `
+        <div class="info-block" style="margin-top:20px;">
+          <div class="info-title">Event Logistics: ${evt.name}</div>
+          <div class="info-grid">
+            <div class="info-item"><span>Organizer</span>${evt.organizer}</div>
+            <div class="info-item"><span>Timing</span>${evt.timing}</div>
+            <div class="info-item"><span>Venue</span>${evt.venue}</div>
+            <div class="info-item"><span>Seat Capacity</span>${evt.capacity} seats</div>
+            <div class="info-item"><span>Faculty Coordinator</span>${evt.coordinator}</div>
+            <div class="info-item"><span>Contact Coordinator</span>${evt.phone}</div>
+          </div>
+        </div>
+
+        <div class="info-block" style="border-left-color: var(--accent); margin-bottom: 25px;">
+          <div class="info-title">Venue Directions</div>
+          <div class="info-grid">
+            <div class="info-item"><span>Building Block</span>${evt.building || '-'}</div>
+            <div class="info-item"><span>Floor Level</span>${evt.floor || '-'}</div>
+            <div class="info-item"><span>Hall/Room</span>${evt.room || '-'}</div>
+            <div class="info-item"><span>Nearest Landmark</span>${evt.landmark || '-'}</div>
+          </div>
+        </div>
+
+        <div style="text-align:right;">
+          <button class="btn btn-primary" onclick="openRegistration(null, '${evt.id}')">📝 Register to Attend Event</button>
+        </div>
+      `;
+
+      container.style.display = 'block';
+    }
+
+    function loadOfficeInfo() {
+      const officeId = document.getElementById('workOffice').value;
+      const container = document.getElementById('officeInfoContainer');
+
+      if (!officeId) {
+        container.style.display = 'none';
+        return;
+      }
+
+      const office = dbOffices.find(o => o.id === officeId);
+      if (!office) return;
+
+      container.innerHTML = `
+        <div class="info-block" style="margin-top:20px;">
+          <div class="info-title">Office Directory - ${office.name}</div>
+          <div class="info-grid">
+            <div class="info-item"><span>Office Head</span>${office.head}</div>
+            <div class="info-item"><span>Working Timing</span>${office.timing}</div>
+            <div class="info-item"><span>Direct Line</span>${office.phone}</div>
+            <div class="info-item"><span>Office Email</span>${office.email}</div>
+            <div class="info-item"><span>Location Block</span>${office.building}</div>
+            <div class="info-item"><span>Room details</span>${office.floor}, ${office.room}</div>
+          </div>
+        </div>
+
+        <div style="text-align:right;">
+          <button class="btn btn-primary" onclick="openRegistration(null, null, '${office.id}')">📝 Register for Office Visit</button>
+        </div>
+      `;
+
+      container.style.display = 'block';
+    }
+
+    function loadNavigationInfo() {
+      const navId = document.getElementById('workNav').value;
+      const container = document.getElementById('navInfoContainer');
+
+      if (!navId) {
+        container.style.display = 'none';
+        return;
+      }
+
+      const nav = dbNavigation.find(n => n.id === navId);
+      if (!nav) return;
+
+      container.innerHTML = `
+        <div class="info-block" style="margin-top:20px; border-left-color:var(--success);">
+          <div class="info-title">Destination Navigation details</div>
+          <div class="info-grid">
+            <div class="info-item"><span>Location name</span>${nav.name}</div>
+            <div class="info-item"><span>Building Block</span>${nav.building}</div>
+            <div class="info-item"><span>Floor Level</span>${nav.floor}</div>
+            <div class="info-item"><span>Room/Office</span>${nav.room}</div>
+            <div class="info-item"><span>Distance from Entrance</span>${nav.distance}</div>
+            <div class="info-item"><span>Est. Walking Time</span>${nav.walkingTime}</div>
+          </div>
+        </div>
+
+        <div style="text-align:right;">
+          <button class="btn btn-primary" onclick="openRegistration(null, null, null, '${nav.id}')">📝 Register & Show Directions</button>
+        </div>
+      `;
+
+      container.style.display = 'block';
+    }
+
+    // Modal Registration Launch
+    let regDeptId = '';
+    let regEventId = '';
+    let regOfficeId = '';
+    let regNavId = '';
+
+    function openRegistration(deptId = null, eventId = null, officeId = null, navId = null) {
+      regDeptId = deptId || '';
+      regEventId = eventId || '';
+      regOfficeId = officeId || '';
+      regNavId = navId || '';
+      
+      openModal('registerModal');
+    }
+
+    function setDuration(val) {
+      expectedDuration = val;
+      const btns = document.querySelectorAll('#durationContainer .duration-btn');
+      btns.forEach(b => {
+        if (b.innerText.toLowerCase().includes(val.toLowerCase().replace(' minutes', ' mins').replace(' hour', ' hour'))) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
+      });
+
+      const customTimeGroup = document.getElementById('customTimeGroup');
+      if (val === 'Custom') {
+        customTimeGroup.style.display = 'block';
+      } else {
+        customTimeGroup.style.display = 'none';
+      }
+    }
+
+    async function submitRegistration(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('vName').value.trim();
+      const phone = document.getElementById('vPhone').value.trim();
+      const email = document.getElementById('vEmail').value.trim();
+      const gender = document.getElementById('vGender').value;
+      const address = document.getElementById('vAddress').value.trim();
+      const govId = document.getElementById('vGovId').value.trim();
+      const vehicleNum = document.getElementById('vVehicle').value.trim();
+
+      if (!/^\d{10}$/.test(phone)) {
+        showToast('Please enter a valid 10-digit mobile number.', 'warning');
+        return;
+      }
+
+      const visitDate = new Date().toISOString().split('T')[0];
+      const now = new Date();
+      const expectedArrival = now.toTimeString().split(' ')[0].substring(0, 5); // HH:MM
+
+      let expectedExit = '';
+      if (expectedDuration === 'Custom') {
+        expectedExit = document.getElementById('vCustomTime').value;
+        if (!expectedExit) {
+          showToast('Please enter your custom expected leave time.', 'warning');
+          return;
+        }
+      }
+
+      const payload = {
+        name,
+        phone,
+        email,
+        gender,
+        address,
+        purpose: selectedPurposeText,
+        visitDate,
+        expectedArrival,
+        expectedExit,
+        expectedDuration,
+        govId,
+        vehicleNum,
+        departmentId: regDeptId || 'none',
+        eventId: regEventId || 'none',
+        officeId: regOfficeId || 'none',
+        employeeId: 'none'
+      };
+
+      if (regDeptId) {
+        const dept = dbDepartments.find(d => d.id === regDeptId);
+        if (dept) {
+          const emp = dbFaculty.find(f => f.departmentId === regDeptId);
+          if (emp) payload.employeeId = emp.id;
+        }
+      }
+
+      const btn = document.getElementById('vSubmitBtn');
+      btn.disabled = true;
+      btn.innerText = 'Registering...';
+
+      try {
+        const res = await fetch('/api/visitors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          const newVisitor = await res.json();
+          showToast('Registration complete! Redirecting to visitor dashboard...', 'success');
+          
+          setTimeout(() => {
+            window.location.href = `visitor-portal.html?id=${newVisitor.id}`;
+          }, 1000);
+        } else {
+          const err = await res.json();
+          showToast(err.error || 'Failed to submit registration.', 'danger');
+        }
+      } catch (err) {
+        console.error('Submit error:', err);
+        showToast('Server connection failed.', 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Complete Registration';
+      }
+    }
+  </script>
+</body>
+</html>

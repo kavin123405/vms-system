@@ -1,0 +1,16 @@
+[
+  {
+    "id": "u-admin",
+    "email": "admin@kprcas.com",
+    "password": "admin123",
+    "name": "Administrator",
+    "role": "admin"
+  },
+  {
+    "id": "u-sec",
+    "email": "security@kprcas.com",
+    "password": "security123",
+    "name": "Gate 1 Security",
+    "role": "security"
+  }
+]

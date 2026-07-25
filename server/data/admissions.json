@@ -1,0 +1,21 @@
+{
+  "officeName": "Admission Center",
+  "timing": "9:00 AM - 5:30 PM",
+  "head": "Dr. Rajesh Sekar",
+  "phone": "9876543244",
+  "email": "admission@kprcas.com",
+  "building": "Main Block",
+  "floor": "Ground Floor",
+  "room": "Room 101",
+  "mapLink": "https://maps.google.com/?q=KPRCAS+Admission+Office",
+  "counselors": [
+    {
+      "name": "Mrs. Shalini",
+      "phone": "9876543245"
+    },
+    {
+      "name": "Mr. Deepak",
+      "phone": "9876543246"
+    }
+  ]
+}

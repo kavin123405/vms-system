@@ -1,0 +1,25 @@
+{
+  "cellName": "Placement Cell",
+  "officer": "Mr. Vijay Shankar",
+  "phone": "9876543255",
+  "email": "placement@kprcas.com",
+  "officeLocation": "B-Block, Room 102",
+  "interviewHall": "Seminar Hall 1",
+  "companyName": "TCS / Cognizant",
+  "venue": "Seminar Hall 1 & Labs",
+  "location": "B-Block, Ground Floor",
+  "activeDrives": [
+    {
+      "company": "TCS",
+      "venue": "Seminar Hall 1",
+      "interviewHall": "Seminar Hall 1 & Labs",
+      "location": "B-Block, Ground Floor"
+    },
+    {
+      "company": "Cognizant",
+      "venue": "Seminar Hall 2",
+      "interviewHall": "Seminar Hall 2",
+      "location": "B-Block, 1st Floor"
+    }
+  ]
+}

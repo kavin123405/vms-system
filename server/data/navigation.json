@@ -1,0 +1,123 @@
+[
+  {
+    "id": "nav-1",
+    "name": "Computer Science Dept",
+    "building": "A-Block",
+    "floor": "2nd Floor",
+    "room": "A-204",
+    "landmark": "Near Elevator A",
+    "distance": "120m",
+    "walkingTime": "1.5 mins",
+    "mapLink": "https://maps.google.com/?q=KPRCAS+CS+Dept"
+  },
+  {
+    "id": "nav-2",
+    "name": "Information Technology Dept",
+    "building": "B-Block",
+    "floor": "3rd Floor",
+    "room": "B-302",
+    "landmark": "Next to Server Room",
+    "distance": "180m",
+    "walkingTime": "2.5 mins",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-3",
+    "name": "Auditorium",
+    "building": "Main Block",
+    "floor": "1st Floor",
+    "room": "Auditorium Hall",
+    "landmark": "Opposite Entrance Fountain",
+    "distance": "150m",
+    "walkingTime": "2 mins",
+    "mapLink": "https://maps.google.com/?q=KPRCAS+Auditorium"
+  },
+  {
+    "id": "nav-4",
+    "name": "Seminar Hall 1",
+    "building": "Placement Block",
+    "floor": "Ground Floor",
+    "room": "Room S-1",
+    "landmark": "Next to Placement Cell",
+    "distance": "210m",
+    "walkingTime": "3 mins",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-5",
+    "name": "Central Library",
+    "building": "Library Block",
+    "floor": "Ground & 1st Floor",
+    "room": "Central Library",
+    "landmark": "Opposite Playground",
+    "distance": "250m",
+    "walkingTime": "3.5 mins",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-6",
+    "name": "Main Canteen",
+    "building": "Food Court Block",
+    "floor": "Ground Floor",
+    "room": "Food Court",
+    "landmark": "Opposite Sports Ground",
+    "distance": "300m",
+    "walkingTime": "4 mins",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-7",
+    "name": "Visitor Parking",
+    "building": "Main Entrance",
+    "floor": "Ground Floor",
+    "room": "Zone P-1",
+    "landmark": "Right of Main Gate",
+    "distance": "40m",
+    "walkingTime": "0.5 mins",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-8",
+    "name": "Main Gate",
+    "building": "Entrance Arch",
+    "floor": "Ground Floor",
+    "room": "Security Gate 1",
+    "landmark": "Main Road Access",
+    "distance": "0m",
+    "walkingTime": "0 mins",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-9",
+    "name": "Medical Room",
+    "building": "A-Block",
+    "floor": "Ground Floor",
+    "room": "A-102",
+    "landmark": "Opposite Reception",
+    "distance": "90m",
+    "walkingTime": "1 min",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-10",
+    "name": "Reception",
+    "building": "Main Block",
+    "floor": "Ground Floor",
+    "room": "Reception Lobby",
+    "landmark": "Foyer Entrance",
+    "distance": "70m",
+    "walkingTime": "1 min",
+    "mapLink": ""
+  },
+  {
+    "id": "nav-11",
+    "name": "Emergency Exit (A-Block)",
+    "building": "A-Block",
+    "floor": "Ground Floor",
+    "room": "Stairwell 2",
+    "landmark": "Rear Exit",
+    "distance": "110m",
+    "walkingTime": "1.5 mins",
+    "mapLink": ""
+  }
+]

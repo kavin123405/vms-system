@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Visitor Dashboard - KPRCAS</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .portal-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .status-banner {
+      border-radius: 20px;
+      padding: 30px;
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+    .status-registered {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+    .status-inside {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+    .status-completed {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+    .status-overstayed {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+    .countdown-timer {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 15px 0;
+      letter-spacing: 1px;
+    }
+    .destination-card {
+      background-color: white;
+      border-radius: 20px;
+      border: 1px solid var(--border-slate);
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      margin-bottom: 30px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .grid-item span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .grid-item div {
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body style="background-color: #f8fafc;">
+  <!-- Top Nav -->
+  <header class="top-navbar" style="position: static; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+    <div class="nav-brand" style="display: flex; align-items: center; gap: 10px;">
+      <img src="assets/logo2.jpg" alt="Logo" style="height: 40px; border-radius: 6px;" />
+      <span>KPRCAS Visitor Portal</span>
+    </div>
+    <span style="font-weight: 600; color: var(--text-muted);" id="visitorIdBadge">ID: --</span>
+  </header>
+
+  <div class="portal-container">
+    <!-- Active Status Banner -->
+    <div class="status-banner status-registered" id="statusBanner">
+      <h2 style="font-size:1.5rem; font-weight:700;" id="statusTitle">Awaiting Entry Check-In</h2>
+      <p style="margin-top: 5px; opacity: 0.9;" id="statusSubtitle">Please present your details at the security gate to check-in.</p>
+      
+      <!-- Inside Active Display -->
+      <div id="countdownArea" style="display: none;">
+        <div class="countdown-timer" id="timerDisplay">00:00</div>
+        <p style="font-size:0.9rem; opacity:0.9;" id="timerLabel">Time remaining for expected exit</p>
+      </div>
+    </div>
+
+    <!-- Quick Checkout / Extension controls for visitor -->
+    <div class="data-card" style="text-align: center; display: none;" id="visitorControls">
+      <h3 style="margin-bottom:15px; color:var(--primary-dark);">Manage Your Visit</h3>
+      <div style="display:flex; justify-content:center; gap:15px;">
+        <button class="btn btn-danger" onclick="checkOutNow()">✅ Check Out Now</button>
+        <button class="btn btn-primary" onclick="openExtensionModal()">🕒 Extend Visit</button>
+      </div>
+    </div>
+
+    <!-- Visit Details & Navigation -->
+    <div class="destination-card">
+      <h3 style="color:var(--primary-dark); border-bottom: 1px solid var(--border-slate); padding-bottom: 12px; margin-bottom: 15px;">
+        📍 Destination Navigation & Info
+      </h3>
+      
+      <div class="grid-3">
+        <div class="grid-item">
+          <span>Visitor Name</span>
+          <div id="pName">--</div>
+        </div>
+        <div class="grid-item">
+          <span>Visit Purpose</span>
+          <div id="pPurpose">--</div>
+        </div>
+        <div class="grid-item">
+          <span>Registered Date</span>
+          <div id="pDate">--</div>
+        </div>
+        <div class="grid-item">
+          <span>Expected Arrival</span>
+          <div id="pArrival">--</div>
+        </div>
+        <div class="grid-item">
+          <span>Expected Exit</span>
+          <div id="pExit">--</div>
+        </div>
+        <div class="grid-item">
+          <span>Visit Duration</span>
+          <div id="pDuration">--</div>
+        </div>
+      </div>
+
+      <!-- Destination Specific Info -->
+      <div id="destinationDetails" style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed var(--border-slate);">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+
+    <!-- Google Map Embed -->
+    <div class="destination-card" id="mapCard" style="display: none;">
+      <h3 style="color:var(--primary-dark); margin-bottom: 15px;">🗺️ Campus Map Directions</h3>
+      <div style="border-radius:12px; overflow:hidden; border:1px solid var(--border-slate);">
+        <iframe id="mapIframe" src="" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= OVERSTAY / REMINDER MODAL ================= -->
+  <div class="modal-overlay" id="reminderModal" style="z-index: 2000;">
+    <div class="modal-content" style="max-width: 500px; text-align: center;">
+      <div class="modal-header" style="justify-content: center;">
+        <h3 class="modal-title" style="color: var(--danger);">🕒 Visit Duration Expired</h3>
+      </div>
+      <div class="modal-body" style="padding: 20px 0;">
+        <p style="font-weight: 600; font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 10px;">
+          Friendly Reminder – Please Complete Your Check-Out
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">
+          According to your registration, your expected visit duration has ended.<br>
+          If you have completed your visit, please click <strong>Check Out Now</strong>.<br>
+          If you need more time, you can click <strong>Remind Me Later</strong> to extend your stay.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center; gap: 15px; border-top: none;">
+        <button class="btn btn-danger" onclick="checkOutNow()">✅ Check Out Now</button>
+        <button class="btn btn-outline" onclick="openExtensionModalDirect()">🕒 Remind Me Later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EXTENSION MODAL ================= -->
+  <div class="modal-overlay" id="extensionModal" style="z-index: 2100;">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Request Visit Extension</h3>
+        <button class="modal-close" onclick="closeModal('extensionModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 15px; color: var(--text-muted);">How much extra time do you need for your visit?</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;" id="extBtnGrid">
+          <button class="btn btn-outline" onclick="requestExtension(15)">15 Mins</button>
+          <button class="btn btn-outline" onclick="requestExtension(30)">30 Mins</button>
+          <button class="btn btn-outline" onclick="requestExtension(45)">45 Mins</button>
+          <button class="btn btn-outline" onclick="requestExtension(60)">1 Hour</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    let visitorId = '';
+    let visitor = null;
+    let timerInterval = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      visitorId = params.get('id');
+
+      if (!visitorId) {
+        alert('Invalid Visitor Access link.');
+        window.location.href = 'visitor-services.html';
+        return;
+      }
+
+      document.getElementById('visitorIdBadge').innerText = `ID: ${visitorId}`;
+      loadVisitorPortal();
+
+      // Poll visitor updates every 5 seconds to sync state (reminders, checkout status)
+      setInterval(loadVisitorPortal, 5000);
+    });
+
+    async function loadVisitorPortal() {
+      try {
+        const res = await fetch('/api/visitors');
+        if (!res.ok) return;
+
+        const list = await res.json();
+        visitor = list.find(v => v.id === visitorId);
+
+        if (!visitor) {
+          console.error('Visitor record not found.');
+          return;
+        }
+
+        renderPortalState();
+      } catch (err) {
+        console.error('Portal load error:', err);
+      }
+    }
+
+    function renderPortalState() {
+      // 1. Populate basic text
+      document.getElementById('pName').innerText = visitor.name;
+      document.getElementById('pPurpose').innerText = visitor.purpose;
+      document.getElementById('pDate').innerText = visitor.visitDate;
+      document.getElementById('pArrival').innerText = visitor.checkInTime || visitor.expectedArrival;
+      document.getElementById('pExit').innerText = visitor.expectedExit;
+      document.getElementById('pDuration').innerText = visitor.expectedDuration;
+
+      const banner = document.getElementById('statusBanner');
+      const title = document.getElementById('statusTitle');
+      const subtitle = document.getElementById('statusSubtitle');
+      const countdown = document.getElementById('countdownArea');
+      const controls = document.getElementById('visitorControls');
+
+      // Clear styles
+      banner.className = 'status-banner';
+
+      if (visitor.status === 'pending' || visitor.status === 'approved') {
+        banner.classList.add('status-registered');
+        title.innerText = 'Registration Confirmed 📋';
+        subtitle.innerText = 'Awaiting security check-in at Gate 1.';
+        countdown.style.display = 'none';
+        controls.style.display = 'none';
+      }
+      else if (visitor.status === 'checked-in') {
+        controls.style.display = 'block';
+
+        // Check if marked overstayed
+        if (visitor.visitStatus === 'overstayed') {
+          banner.classList.add('status-overstayed');
+          title.innerText = 'Visit Overstay Warning 🕒';
+          subtitle.innerText = 'You have exceeded your registered visit duration.';
+          countdown.style.display = 'block';
+          document.getElementById('timerLabel').innerText = 'Overdue. Please checkout or extend stay.';
+          document.getElementById('timerDisplay').innerText = '00:00';
+          clearInterval(timerInterval);
+
+          // Prompt reminder modal if not already opened and reminderCount is set
+          if (visitor.reminderCount > 0 && document.getElementById('reminderModal').style.display !== 'flex' && document.getElementById('extensionModal').style.display !== 'flex') {
+            openModal('reminderModal');
+          }
+        } else {
+          banner.classList.add('status-inside');
+          title.innerText = 'Inside Campus - Checked In ✅';
+          subtitle.innerText = `Checked in at ${visitor.checkInTime}. Enjoy your visit.`;
+          countdown.style.display = 'block';
+          document.getElementById('timerLabel').innerText = 'Time remaining for expected exit';
+          
+          startCountdown();
+
+          // Also trigger modal immediately if server marked exit time reached
+          if (visitor.reminderCount === 1 && document.getElementById('reminderModal').style.display !== 'flex' && document.getElementById('extensionModal').style.display !== 'flex') {
+            openModal('reminderModal');
+          }
+        }
+      }
+      else if (visitor.status === 'checked-out') {
+        banner.classList.add('status-completed');
+        title.innerText = 'Visit Completed 🚪';
+        subtitle.innerText = `Thank you for visiting! Checked out at ${visitor.checkOutTime}.`;
+        countdown.style.display = 'none';
+        controls.style.display = 'none';
+        document.getElementById('mapCard').style.display = 'none';
+        clearInterval(timerInterval);
+        
+        // Ensure reminder modal is closed
+        closeModal('reminderModal');
+      }
+
+      // Load specific directions based on visit parameters
+      renderDirections();
+    }
+
+    function startCountdown() {
+      if (!visitor.expectedExitTime) return;
+      
+      clearInterval(timerInterval);
+
+      const display = document.getElementById('timerDisplay');
+      
+      const updateTimer = () => {
+        const now = new Date();
+        const exitTime = new Date(visitor.expectedExitTime);
+        const diffMs = exitTime - now;
+
+        if (diffMs <= 0) {
+          display.innerText = '00:00';
+          display.style.color = '#ef4444';
+          document.getElementById('timerLabel').innerText = 'Overdue. Please checkout or extend stay.';
+          clearInterval(timerInterval);
+          return;
+        }
+
+        display.style.color = 'white';
+        const totalSecs = Math.floor(diffMs / 1000);
+        const hours = Math.floor(totalSecs / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+        const secs = totalSecs % 60;
+
+        const formatted = `${hours > 0 ? hours + ':' : ''}${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        display.innerText = formatted;
+      };
+
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    async function renderDirections() {
+      const details = document.getElementById('destinationDetails');
+      const mapCard = document.getElementById('mapCard');
+      const mapIframe = document.getElementById('mapIframe');
+
+      let searchLoc = '';
+
+      if (visitor.departmentId && visitor.departmentId !== 'none') {
+        try {
+          const res = await fetch('/api/departments');
+          if (res.ok) {
+            const depts = await res.json();
+            const dept = depts.find(d => d.id === visitor.departmentId);
+            if (dept) {
+              details.innerHTML = `
+                <div style="background-color: var(--bg-slate); padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary);">
+                  <strong style="color:var(--primary-dark); font-size:1rem;">🏢 Department Location Details</strong>
+                  <div style="margin-top: 10px; font-size: 0.95rem; line-height: 1.6;">
+                    • <strong>Block:</strong> ${dept.block}<br>
+                    • <strong>Floor:</strong> ${dept.floor}<br>
+                    • <strong>Room:</strong> ${dept.room}<br>
+                    • <strong>Office Timing:</strong> ${dept.timing}<br>
+                    • <strong>HOD Contact:</strong> ${dept.hodName} (${dept.hodPhone})
+                  </div>
+                </div>
+              `;
+              searchLoc = dept.name + ' Department KPRCAS';
+            }
+          }
+        } catch (e) { console.error(e); }
+      }
+      else if (visitor.eventId && visitor.eventId !== 'none') {
+        try {
+          const res = await fetch('/api/events');
+          if (res.ok) {
+            const events = await res.json();
+            const evt = events.find(e => e.id === visitor.eventId);
+            if (evt) {
+              details.innerHTML = `
+                <div style="background-color: var(--bg-slate); padding: 15px; border-radius: 10px; border-left: 4px solid var(--accent);">
+                  <strong style="color:var(--primary-dark); font-size:1rem;">🎉 Event Venue Directions</strong>
+                  <div style="margin-top: 10px; font-size: 0.95rem; line-height: 1.6;">
+                    • <strong>Venue Name:</strong> ${evt.venue}<br>
+                    • <strong>Building:</strong> ${evt.building}<br>
+                    • <strong>Location:</strong> ${evt.floor}, ${evt.room}<br>
+                    • <strong>Nearest Landmark:</strong> ${evt.landmark}<br>
+                    • <strong>Coordinator:</strong> ${evt.coordinator} (${evt.phone})
+                  </div>
+                </div>
+              `;
+              searchLoc = evt.venue + ' KPRCAS';
+            }
+          }
+        } catch (e) { console.error(e); }
+      }
+      else if (visitor.officeId && visitor.officeId !== 'none') {
+        try {
+          const res = await fetch('/api/offices');
+          if (res.ok) {
+            const offices = await res.json();
+            const off = offices.find(o => o.id === visitor.officeId);
+            if (off) {
+              details.innerHTML = `
+                <div style="background-color: var(--bg-slate); padding: 15px; border-radius: 10px; border-left: 4px solid var(--info);">
+                  <strong style="color:var(--primary-dark); font-size:1rem;">🏢 Office Directory details</strong>
+                  <div style="margin-top: 10px; font-size: 0.95rem; line-height: 1.6;">
+                    • <strong>Office:</strong> ${off.name}<br>
+                    • <strong>Head:</strong> ${off.head}<br>
+                    • <strong>Timing:</strong> ${off.timing}<br>
+                    • <strong>Room:</strong> ${off.building}, ${off.floor}, ${off.room}
+                  </div>
+                </div>
+              `;
+              searchLoc = off.name + ' KPRCAS';
+            }
+          }
+        } catch (e) { console.error(e); }
+      }
+      else {
+        // Fallback or navigation
+        details.innerHTML = `
+          <div style="background-color: var(--bg-slate); padding: 15px; border-radius: 10px;">
+            Please enquire at the main gate reception desk for routing and entry pass details.
+          </div>
+        `;
+        searchLoc = 'KPR College of Arts and Science';
+      }
+
+      if (searchLoc && visitor.status !== 'checked-out') {
+        mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(searchLoc)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+        mapCard.style.display = 'block';
+      }
+    }
+
+    async function checkOutNow() {
+      try {
+        const res = await fetch(`/api/visitors/${visitorId}/checkout`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (res.ok) {
+          showToast('Checked Out successfully! Thank you for visiting.', 'success');
+          closeModal('reminderModal');
+          loadVisitorPortal();
+        } else {
+          showToast('Failed to checkout.', 'danger');
+        }
+      } catch (err) {
+        showToast('Server connection error.', 'danger');
+      }
+    }
+
+    function openExtensionModal() {
+      openModal('extensionModal');
+    }
+
+    function openExtensionModalDirect() {
+      closeModal('reminderModal');
+      openModal('extensionModal');
+    }
+
+    async function requestExtension(minutes) {
+      try {
+        const res = await fetch(`/api/visitors/${visitorId}/extend`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ extraMinutes: minutes })
+        });
+
+        if (res.ok) {
+          showToast(`Stay extended by ${minutes} minutes!`, 'success');
+          closeModal('extensionModal');
+          loadVisitorPortal();
+        } else {
+          showToast('Failed to request extension.', 'danger');
+        }
+      } catch (err) {
+        showToast('Server connection error.', 'danger');
+      }
+    }
+  </script>
+</body>
+</html>

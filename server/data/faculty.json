@@ -1,0 +1,26 @@
+[
+  {
+    "id": "fac-2",
+    "name": "Prof. Priya Sharma",
+    "designation": "HOD & Professor",
+    "phone": "9876543212",
+    "email": "priya.commerce@kprcas.com",
+    "departmentId": "dept-4"
+  },
+  {
+    "id": "fac-3",
+    "name": "Dr. Suresh Babu",
+    "designation": "HOD & Associate Professor",
+    "phone": "9876543222",
+    "email": "suresh.it@kprcas.com",
+    "departmentId": "dept-3"
+  },
+  {
+    "id": "fac-7",
+    "name": "Prof. Ramya Devi",
+    "designation": "Assistant Professor",
+    "phone": "9876543292",
+    "email": "ramya.it@kprcas.com",
+    "departmentId": "dept-3"
+  }
+]
