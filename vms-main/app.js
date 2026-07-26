@@ -1,7 +1,10 @@
+import './mock-api.js';
+
 // Shared Frontend Utilities
 
 // API Base URL
 const API_URL = ''; // Uses relative paths since Vite proxies them
+
 
 // Check if user session is valid and has correct role
 function checkSession(requiredRole) {
