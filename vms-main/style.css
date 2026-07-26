@@ -628,8 +628,28 @@ tr:hover td {
   }
 }
 
+.menu-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--primary-dark);
+  padding: 5px;
+  border-radius: 6px;
+  transition: var(--transition);
+  align-items: center;
+  justify-content: center;
+}
+.menu-toggle-btn:hover {
+  background-color: var(--border-slate);
+}
+
 /* --- RESPONSIVE DESIGN --- */
 @media (max-width: 768px) {
+  .menu-toggle-btn {
+    display: inline-flex;
+  }
   .sidebar {
     transform: translateX(-100%);
   }
@@ -646,6 +666,7 @@ tr:hover td {
     grid-column: span 1;
   }
 }
+
 
 /* --- VISITOR SERVICES & PORTAL CUSTOM STYLES --- */
 .visitor-container {

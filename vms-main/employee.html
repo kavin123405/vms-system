@@ -37,7 +37,10 @@
     <main class="main-panel">
       <!-- Navbar -->
       <header class="top-navbar">
-        <div class="nav-brand" id="currentTabTitle">Employee Dashboard</div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+          <div class="nav-brand" id="currentTabTitle">Employee Dashboard</div>
+        </div>
         <div class="nav-user">
           <div class="nav-user-info">
             <div class="nav-user-name" id="navUserName">Employee Name</div>

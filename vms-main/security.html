@@ -37,7 +37,10 @@
     <main class="main-panel">
       <!-- Navbar -->
       <header class="top-navbar">
-        <div class="nav-brand" id="currentTabTitle">Security Dashboard</div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <button class="menu-toggle-btn" onclick="toggleSidebar()">☰</button>
+          <div class="nav-brand" id="currentTabTitle">Security Dashboard</div>
+        </div>
         <div style="display: flex; align-items: center; gap: 20px;">
           <!-- Notifications Bell -->
           <div class="notification-bell" onclick="toggleNotificationsPanel()" style="position: relative; cursor: pointer; font-size: 1.3rem;">

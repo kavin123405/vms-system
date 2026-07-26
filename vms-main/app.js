@@ -89,6 +89,39 @@ function closeModal(modalId) {
   if (modal) modal.style.display = 'none';
 }
 
+// Sidebar toggle for mobile devices
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  if (sidebar) {
+    sidebar.classList.toggle('active');
+  }
+}
+
+// Handle auto-closing sidebar on mobile
+document.addEventListener('DOMContentLoaded', () => {
+  // Close sidebar when a navigation link is clicked
+  const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const sidebar = document.querySelector('.sidebar');
+      if (sidebar && sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+      }
+    });
+  });
+
+  // Close sidebar when clicking outside of it
+  document.addEventListener('click', (e) => {
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.querySelector('.menu-toggle-btn');
+    if (sidebar && sidebar.classList.contains('active')) {
+      if (!sidebar.contains(e.target) && (!toggleBtn || !toggleBtn.contains(e.target))) {
+        sidebar.classList.remove('active');
+      }
+    }
+  });
+});
+
 // Expose functions globally for non-module inline scripts and event handlers
 window.checkSession = checkSession;
 window.logout = logout;
@@ -97,4 +130,6 @@ window.updateNavbar = updateNavbar;
 window.escapeHTML = escapeHTML;
 window.openModal = openModal;
 window.closeModal = closeModal;
+window.toggleSidebar = toggleSidebar;
+
 
