@@ -129,8 +129,13 @@
       color: var(--primary);
       margin-top: 5px;
     }
+    .duration-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
     .duration-btn {
-      padding: 10px 15px;
+      padding: 10px 10px;
       border: 1px solid var(--border-slate);
       background-color: white;
       border-radius: 8px;
@@ -138,11 +143,38 @@
       font-weight: 500;
       font-size: 0.9rem;
       transition: var(--transition);
+      text-align: center;
+      white-space: nowrap;
     }
     .duration-btn.active, .duration-btn:hover {
       border-color: var(--primary);
       background-color: rgba(30, 60, 114, 0.05);
       color: var(--primary);
+    }
+
+    @media (max-width: 480px) {
+      .duration-container {
+        gap: 8px;
+      }
+      .duration-btn {
+        padding: 10px 4px;
+        font-size: 0.8rem;
+      }
+      .purpose-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .purpose-card {
+        padding: 16px 8px;
+        border-radius: 12px;
+      }
+      .purpose-card .icon {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+      }
+      .purpose-card h3 {
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
@@ -164,8 +196,8 @@
 
     <!-- 11 Visitor Purposes -->
     <div class="purpose-grid" id="purposeGrid">
-      <div class="purpose-card" onclick="selectPurpose('Parents Meeting', '👨‍👩‍👧')">
-        <span class="icon">👨‍👩‍👧</span>
+      <div class="purpose-card" onclick="selectPurpose('Parents Meeting', '👪')">
+        <span class="icon">👪</span>
         <h3>Parents Meeting</h3>
       </div>
       <div class="purpose-card" onclick="selectPurpose('Student Admission', '🎓')">
@@ -265,7 +297,7 @@
             <!-- Expected Duration buttons -->
             <div class="full-width">
               <span style="font-weight:600; font-size:0.9rem; color:var(--primary-dark); display:block; margin-bottom:10px;">Expected Duration of Visit *</span>
-              <div style="display:flex; flex-wrap:wrap; gap:10px;" id="durationContainer">
+              <div class="duration-container" id="durationContainer">
                 <button type="button" class="duration-btn active" onclick="setDuration('15 Minutes')">15 Mins</button>
                 <button type="button" class="duration-btn" onclick="setDuration('30 Minutes')">30 Mins</button>
                 <button type="button" class="duration-btn" onclick="setDuration('45 Minutes')">45 Mins</button>
